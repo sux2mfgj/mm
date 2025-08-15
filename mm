@@ -143,20 +143,33 @@ remove() {
   # TODO
 }
 
+arg_check(){
+  num=$1
+  shift
+  if [ $# -lt $num ]; then
+    echo "Invalid argument."
+    help
+    exit 1
+  fi
+}
+
 case "$cmd" in
   init)
     init
     ;;
   new)
+    arg_check 1 $@
     new $1
     ;;
   open)
+    arg_check 1 $@
     open $1
     ;;
   ls)
     ls $@
     ;;
   remove)
+    arg_check 1 $@
     remove $1
     ;;
   help)
