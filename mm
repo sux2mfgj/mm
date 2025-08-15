@@ -40,7 +40,6 @@ has_entry() {
 
 cur_has_entry() {
   local file=$1
-  local cur_mm_index=$(pwd)/.mm/index
 
   has_entry ${cur_mm_index} ${file}
 }
