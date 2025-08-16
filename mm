@@ -125,7 +125,7 @@ ls() {
       fi
       ;;
     all)
-      cat $HOME/.mm/index
+      cat "${mm_root_index}"
       ;;
     *)
       echo Invalid argument.
