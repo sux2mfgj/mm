@@ -59,8 +59,8 @@ update_index() {
 }
 
 new() {
-  fname=$1
   local file=${cur_mm}/${fname}
+  local fname="$1"
 
   mkdir -p ${cur_mm}
   touch ${cur_mm_index}
@@ -138,8 +138,8 @@ ls() {
 remove() {
   # if $1 is exists, remove an entry of the file.
   # if not, remove .mm/. You should confirm with the user before deleting.
-  file=$(pwd)/.mm/$1
   if ! cur_has_entry $file; then
+  local file="$(pwd)/.mm/$1"
     echo not found
   fi
 
@@ -147,7 +147,7 @@ remove() {
 }
 
 arg_check(){
-  num=$1
+  local num="$1"
   shift
   if [ $# -lt $num ]; then
     echo "Invalid argument."
