@@ -83,6 +83,10 @@ open() {
     exit 1
   fi
 
+  # update the root index.
+  update_index ${mm_root_index} ${cur_mm_index}
+
+  # update the root index.
   update_index ${cur_mm_index} ${file}
 
   editor ${file}
