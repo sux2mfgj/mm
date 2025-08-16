@@ -26,74 +26,74 @@ cmd=$1
 shift
 
 init() {
-  mkdir $mm_root
-  touch $mm_root_index
+  mkdir -p "${mm_root}"
+  touch "${mm_root_index}"
   echo Success
 }
 
 has_entry() {
-  local index=$1
-  local file=$2
+  local index="$1"
+  local file="$2"
 
   grep -q "$file" "$index" 2> /dev/null
 }
 
 cur_has_entry() {
-  local file=$1
+  local file="$1"
 
-  has_entry ${cur_mm_index} ${file}
+  has_entry "${cur_mm_index}" "${file}"
 }
 
 update_index() {
-  local index=$1
-  local file_path=$2
+  local index="$1"
+  local file_path="$2"
   local date=$(date +%Y-%m-%d-%H:%M)
 
-  if has_entry ${index} ${file_path} ; then
+  if has_entry "${index}" "${file_path}" ; then
     sed -i "s|.* ${file_path}|${date} ${file_path}|" ${index}
     echo Updated.
   else
-    echo ${date} ${file_path} >> ${index}
+    echo "${date} ${file_path}" >> "${index}"
     echo Created.
   fi
 }
 
 new() {
-  local file=${cur_mm}/${fname}
   local fname="$1"
+  local file="${cur_mm}/${fname}"
 
-  mkdir -p ${cur_mm}
-  touch ${cur_mm_index}
+  mkdir -p "${cur_mm}"
+  touch "${cur_mm_index}"
 
-  touch ${file}
+  touch "${file}"
 
   # update the root index.
-  update_index ${mm_root_index} ${cur_mm_index}
+  update_index "${mm_root_index}" "${cur_mm_index}"
   # update the local index.
-  update_index ${cur_mm_index} ${file}
+  update_index "${cur_mm_index}" "${file}"
 
-  echo Create a ${fname} and start to track by mm.
+  echo "Create a ${fname} and start to track by mm."
 }
 
 open() {
-  local file=${cur_mm}/$1
+  local file="${cur_mm}/$1"
 
-  if ! cur_has_entry $file; then
-    echo Not found the $file
+  if ! cur_has_entry "${file}"; then
+    echo "Not found the ${file}"
     exit 1
   fi
 
   # update the root index.
-  update_index ${mm_root_index} ${cur_mm_index}
+  update_index "${mm_root_index}" "${cur_mm_index}"
 
   # update the root index.
-  update_index ${cur_mm_index} ${file}
+  update_index "${cur_mm_index}" "${file}"
 
-  editor ${file}
+  editor "${file}"
 }
 
 search_recursive() {
-  local dir=$1
+  local dir="$1"
 
   while [[ "${dir}" != "/" ]];
   do
@@ -102,8 +102,7 @@ search_recursive() {
       return 0
     fi
 
-    dir=$(dirname ${dir})
-
+    dir="$(dirname "${dir}")"
   done
 
   return 1
@@ -112,16 +111,16 @@ search_recursive() {
 ls() {
   local region="local"
   if [ $# -eq 1 ]; then
-    region=$1
+    region="$1"
   fi
 
   case "$region" in
     local)
-      local dir=$(search_recursive $(pwd))
+      local dir="$(search_recursive "$(pwd)")"
       if [[ -n "$dir" ]]; then
-        cat ${dir}/index
+        cat "${dir}/index"
       else
-        echo ".mm is not found in any parent directory."
+        echo ".mm/ is not found in any parent directory."
       fi
       ;;
     all)
@@ -138,8 +137,8 @@ ls() {
 remove() {
   # if $1 is exists, remove an entry of the file.
   # if not, remove .mm/. You should confirm with the user before deleting.
-  if ! cur_has_entry $file; then
   local file="$(pwd)/.mm/$1"
+  if ! cur_has_entry "${file}"; then
     echo not found
   fi
 
