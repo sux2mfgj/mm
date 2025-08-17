@@ -17,9 +17,23 @@ help() {
 # global variables
 mm_root=$HOME/.mm
 mm_root_index=${mm_root}/index
+mm_config=${mm_root}/config
 mm_snapshots=${mm_root}/snapshots
 cur_mm=$(pwd)/.mm
 cur_mm_index=${cur_mm}/index
+
+# 設定項目（デフォルト値）
+editor="vim"
+
+# 設定ファイル読み込み
+load_config() {
+  if [ -f "${mm_config}" ]; then
+    source "${mm_config}"
+  fi
+}
+
+# 設定を読み込む
+load_config
 
 if [ $# -lt 1 ]; then
   help
@@ -32,6 +46,14 @@ shift
 init() {
   mkdir -p "${mm_root}"
   touch "${mm_root_index}"
+  
+  if [ ! -f "${mm_config}" ]; then
+    cat > "${mm_config}" << 'EOF'
+# mm configuration file
+# editor=vim
+EOF
+  fi
+  
   echo Success
 }
 
@@ -95,7 +117,7 @@ open() {
   # update the root index.
   update_index "${cur_mm_index}" "${file}"
 
-  editor "${file}"
+  "$editor" "${file}"
 }
 
 search_recursive() {
