@@ -5,13 +5,20 @@ set -eu
 
 help() {
   printf "usage:\n"
-  printf "\tmm init\t: create a ~/.mm dir\n"
-  printf "\tmm new {filename}\t: create a {filename} and trace the file\n"
-  printf "\tmm ls [local,all]\t: listup the memos \n"
-  printf "\tmm snapshot create [message]\t: create a snapshot of all memos\n"
-  printf "\tmm snapshot list\t: list all snapshots\n"
-  printf "\tmm snapshot help\t: show snapshot help message\n"
-  printf "\tmm help\t: show this message\n"
+  printf "  $ mm init\n"
+  printf "    create ~/.mm directory\n"
+  printf "  $ mm new {filename}\n"
+  printf "    create and track a new memo file\n"
+  printf "  $ mm ls [local,all]\n"
+  printf "    list memos\n"
+  printf "  $ mm snapshot create [message]\n"
+  printf "    create compressed snapshot of all memos\n"
+  printf "  $ mm snapshot list\n"
+  printf "    list all snapshots\n"
+  printf "  $ mm snapshot help\n"
+  printf "    show snapshot help message\n"
+  printf "  $ mm help\n"
+  printf "    show this message\n"
 }
 
 # global variables
@@ -275,9 +282,12 @@ snapshot_list() {
 
 snapshot_help() {
   printf "snapshot usage:\n"
-  printf "\tmm snapshot create [message]\t: create a compressed snapshot of all memos\n"
-  printf "\tmm snapshot list\t\t: list all snapshots\n"
-  printf "\tmm snapshot help\t\t: show this snapshot help message\n"
+  printf "  $ mm snapshot create [message]\n"
+  printf "    create compressed snapshot of all memos\n"
+  printf "  $ mm snapshot list\n"
+  printf "    list all snapshots\n"
+  printf "  $ mm snapshot help\n"
+  printf "    show this snapshot help message\n"
 }
 
 snapshot() {
