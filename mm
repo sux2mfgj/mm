@@ -54,7 +54,9 @@ update_index() {
   local date=$(date +%Y-%m-%d-%H:%M)
 
   if has_entry "${index}" "${file_path}" ; then
-    sed -i "s|.* ${file_path}|${date} ${file_path}|" ${index}
+    grep -v "${file_path}" "${index}" > "${index}.tmp"
+    echo "${date} ${file_path}" >> "${index}.tmp"
+    mv "${index}.tmp" "${index}"
     echo Updated.
   else
     echo "${date} ${file_path}" >> "${index}"
